@@ -1,0 +1,23 @@
+@if (products.length > 0) {
+  <h1>Products ({{ products.length }})</h1>
+}
+<ul class="pill-group">
+  @for (product of products; track product.id; let i = $index) {
+    <li class="pill">
+      @switch (product.title) {
+        @case ("Keyboard") {
+          <span class="icon">⌨️</span>
+        }
+        @case ("Microphone") {
+          <span class="icon">🎤</span>
+        }
+        @default {
+          <span class="icon">📦</span>
+        }
+      }
+      {{ product.title }}
+    </li>
+  } @empty {
+    <p>No products found!</p>
+  }
+</ul>
