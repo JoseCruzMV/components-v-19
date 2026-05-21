@@ -21,8 +21,4 @@
     <p>No products found!</p>
   }
 </ul>
-@if (selectedProduct) {
-  <p>
-    Selected product: <strong>{{ selectedProduct.title }}</strong>
-  </p>
-}
+<app-product-detail [product]="selectedProduct" />

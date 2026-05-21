@@ -1,0 +1,9 @@
+@if (product()) {
+  <h1>Product detail</h1>
+  <p>
+    You selected:
+    <strong>{{ product()!.title }}</strong>
+  </p>
+} @else {
+  <p>No product selected.</p>
+}
