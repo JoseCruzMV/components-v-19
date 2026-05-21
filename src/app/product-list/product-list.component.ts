@@ -17,4 +17,8 @@ export class ProductListComponent {
   ];
 
   selectedProduct: Product | undefined;
+
+  onAdded() {
+    alert(`${this.selectedProduct?.title} added to cart!`);
+  }
 }

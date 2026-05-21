@@ -21,4 +21,4 @@
     <p>No products found!</p>
   }
 </ul>
-<app-product-detail [product]="selectedProduct" />
+<app-product-detail [product]="selectedProduct" (added)="onAdded()" />
