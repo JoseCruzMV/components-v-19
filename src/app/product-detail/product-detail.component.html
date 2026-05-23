@@ -1,9 +1,20 @@
-@if (product()) {
+@let selectedProduct = product()!;
+@if (selectedProduct) {
   <h1>Product detail</h1>
   <p>
     You selected:
-    <strong>{{ product()!.title }}</strong>
+    <strong>{{ selectedProduct.title }}</strong>
   </p>
+  <p>
+    {{ selectedProduct.price | currency: "EUR" }}
+  </p>
+  <div class="pill-group">
+    @for (cat of selectedProduct.categories | keyvalue; track cat.key) {
+      <p class="pill">
+        {{ cat.value | lowercase }}
+      </p>
+    }
+  </div>
   <button (click)="addToCart()">Add to cart</button>
 } @else {
   <p>No product selected.</p>
