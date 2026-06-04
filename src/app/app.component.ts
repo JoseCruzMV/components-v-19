@@ -14,4 +14,18 @@ import { APP_SETTINGS, appSettings } from './app.settings';
 export class AppComponent {
   settings = inject(APP_SETTINGS);
   title = 'components-v-19';
+
+  constructor() {
+    this.changeTitle(this.setTitle);
+  }
+
+  private setTitle = () => {
+    this.title = this.settings.title;
+  };
+
+  private changeTitle(callback: Function) {
+    setTimeout(() => {
+      callback();
+    }, 2000);
+  }
 }
