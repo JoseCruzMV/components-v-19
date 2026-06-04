@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ProductListComponent } from './product-list/product-list.component';
 import { CopyrightDirective } from './copyright.directive';
 import { APP_SETTINGS, appSettings } from './app.settings';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,19 +16,18 @@ export class AppComponent {
   settings = inject(APP_SETTINGS);
   title = 'components-v-19';
 
-  private setTitle = () => {
-    this.title = this.settings.title;
-  };
+  title$ = new Observable<void>((observer) => {
+    setInterval(() => {
+      observer.next();
+    }, 2000);
+  });
 
   constructor() {
-    this.onComplete().then(this.setTitle);
+    this.title$.subscribe(this.setTitle);
   }
 
-  private onComplete(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2000);
-    });
-  }
+  private setTitle = () => {
+    const timestamp = new Date();
+    this.title = `${this.settings.title} (${timestamp.toLocaleTimeString()})`;
+  };
 }
