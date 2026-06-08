@@ -2,21 +2,13 @@ import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { SortPipe } from '../sort.pipe';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductsService } from '../products.service';
-import { ProductViewComponent } from '../product-view/product-view.component';
-import { FavoritesComponent } from '../favorites/favorites.component';
 import { Product } from '../product';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
-  imports: [
-    ProductDetailComponent,
-    SortPipe,
-    FavoritesComponent,
-    ProductViewComponent,
-    AsyncPipe,
-  ],
+  imports: [ProductDetailComponent, SortPipe, AsyncPipe],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [ProductsService],
