@@ -1,11 +1,11 @@
-import { Component, OnInit, inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { Product } from '../product';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { SortPipe } from '../sort.pipe';
 import { ProductsService } from '../products.service';
 import { FavoritesComponent } from '../favorites/favorites.component';
 import { ProductViewComponent } from '../product-view/product-view.component';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-list',
@@ -19,24 +19,21 @@ import { Subscription } from 'rxjs';
   styleUrl: './product-list.component.css',
   providers: [ProductsService],
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
   selectedProduct: Product | undefined;
   products: Product[] | undefined;
-  private productsSub: Subscription | undefined;
 
+  private destroyRef = inject(DestroyRef);
   private productService = inject(ProductsService);
 
   ngOnInit(): void {
     this.getProducts();
   }
 
-  ngOnDestroy(): void {
-    this.productsSub?.unsubscribe();
-  }
-
   private getProducts() {
-    this.productsSub = this.productService
+    this.productService
       .getProducts()
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((products) => {
         this.products = products;
       });
