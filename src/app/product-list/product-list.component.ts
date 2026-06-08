@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { Product } from '../product';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { SortPipe } from '../sort.pipe';
 import { ProductsService } from '../products.service';
 import { FavoritesComponent } from '../favorites/favorites.component';
 import { ProductViewComponent } from '../product-view/product-view.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -18,9 +19,10 @@ import { ProductViewComponent } from '../product-view/product-view.component';
   styleUrl: './product-list.component.css',
   providers: [ProductsService],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   selectedProduct: Product | undefined;
-  products: Product[] = [];
+  products: Product[] | undefined;
+  private productsSub: Subscription | undefined;
 
   private productService = inject(ProductsService);
 
@@ -28,10 +30,16 @@ export class ProductListComponent implements OnInit {
     this.getProducts();
   }
 
+  ngOnDestroy(): void {
+    this.productsSub?.unsubscribe();
+  }
+
   private getProducts() {
-    this.productService.getProducts().subscribe((products) => {
-      this.products = products;
-    });
+    this.productsSub = this.productService
+      .getProducts()
+      .subscribe((products) => {
+        this.products = products;
+      });
   }
 
   onAdded(product: Product) {
