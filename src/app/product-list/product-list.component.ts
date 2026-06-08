@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, DestroyRef } from '@angular/core';
-import { Product } from '../product';
-import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { SortPipe } from '../sort.pipe';
+import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductsService } from '../products.service';
-import { FavoritesComponent } from '../favorites/favorites.component';
 import { ProductViewComponent } from '../product-view/product-view.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FavoritesComponent } from '../favorites/favorites.component';
+import { Product } from '../product';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -14,6 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     SortPipe,
     FavoritesComponent,
     ProductViewComponent,
+    AsyncPipe,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
@@ -21,9 +23,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class ProductListComponent implements OnInit {
   selectedProduct: Product | undefined;
-  products: Product[] | undefined;
+  products$: Observable<Product[]> | undefined;
 
-  private destroyRef = inject(DestroyRef);
   private productService = inject(ProductsService);
 
   ngOnInit(): void {
@@ -31,12 +32,7 @@ export class ProductListComponent implements OnInit {
   }
 
   private getProducts() {
-    this.productService
-      .getProducts()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((products) => {
-        this.products = products;
-      });
+    this.products$ = this.productService.getProducts();
   }
 
   onAdded(product: Product) {
