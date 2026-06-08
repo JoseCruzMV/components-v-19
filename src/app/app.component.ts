@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProductListComponent } from './product-list/product-list.component';
 import { CopyrightDirective } from './copyright.directive';
 import { APP_SETTINGS, appSettings } from './app.settings';
-import { Observable } from 'rxjs';
+import { Observable, timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   settings = inject(APP_SETTINGS);
-  title = 'components-v-19';
+  title: Signal<string> = signal('');
+  currentDate = signal(new Date());
 
   title$ = new Observable<void>((observer) => {
     setInterval(() => {
@@ -24,10 +25,12 @@ export class AppComponent {
 
   constructor() {
     this.title$.subscribe(this.setTitle);
+    this.title = computed(() => {
+      return `${this.settings.title} ${this.currentDate()}`;
+    });
   }
 
   private setTitle = () => {
-    const timestamp = new Date();
-    this.title = `${this.settings.title} (${timestamp.toLocaleTimeString()})`;
+    this.currentDate.set(new Date());
   };
 }
