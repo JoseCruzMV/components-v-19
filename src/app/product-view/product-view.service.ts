@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductsService } from '../products.service';
 import { Product } from '../product';
 
@@ -6,11 +7,15 @@ import { Product } from '../product';
 export class ProductViewService {
   private product: Product | undefined;
   products: Product[] = [];
+  private destroyRef = inject(DestroyRef);
 
   constructor(private productsService: ProductsService) {
-    this.productsService.getProducts().subscribe((products) => {
-      this.products = products;
-    });
+    this.productsService
+      .getProducts()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((products) => {
+        this.products = products;
+      });
   }
 
   getProducts(id: number): Product | undefined {
