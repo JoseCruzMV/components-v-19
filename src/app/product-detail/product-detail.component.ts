@@ -3,6 +3,7 @@ import { CommonModule, AsyncPipe } from '@angular/common';
 import { Product } from '../product';
 import { Observable } from 'rxjs';
 import { ProductsService } from '../products.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,7 +17,10 @@ export class ProductDetailComponent implements OnChanges {
   added = output();
   deleted = output();
 
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    public authService: AuthService,
+  ) {}
 
   ngOnChanges(): void {
     this.product$ = this.productService.getProduct(this.id()!);
