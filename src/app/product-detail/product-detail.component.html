@@ -1,18 +1,17 @@
-@if (product()) {
+@let product = product$ | async;
+@if (product) {
   <h1>Product detail</h1>
   <p>
     You selected:
-    <strong>{{ product()!.title }}</strong>
+    <strong>{{ product.title }}</strong>
   </p>
   <p>
-    {{ product()!.price | currency: "EUR" }}
+    {{ product.price | currency: "EUR" }}
   </p>
   <div class="pill-group">
     <p class="pill">
-      {{ product()!.category | lowercase }}
+      {{ product.category | lowercase }}
     </p>
   </div>
   <button (click)="addToCart()">Add to cart</button>
-} @else {
-  <p>No product selected.</p>
 }
