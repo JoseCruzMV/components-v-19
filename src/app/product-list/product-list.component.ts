@@ -18,7 +18,7 @@ export class ProductListComponent {
     initialValue: [],
   });
 
-  onAdded(product: Product) {
-    alert(`${product?.title} added to cart!`);
+  onAdded() {
+    alert(`${this.selectedProduct?.title} added to cart!`);
   }
 }
