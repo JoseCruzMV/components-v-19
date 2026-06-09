@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Product } from './product';
-import { Observable } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { APP_SETTINGS } from './app.settings';
 
@@ -16,10 +16,25 @@ export class ProductsService {
 
   getProducts(): Observable<Product[]> {
     const options = new HttpParams().set('limit', 10).set('page', 1);
-    return this.http.get<Product[]>(this.productsUrl, { params: options });
+    return this.http.get<Product[]>(this.productsUrl, { params: options }).pipe(
+      map((products) => {
+        this.products = products;
+        return products;
+      }),
+    );
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.productsUrl}/${id}`);
+    const product = this.products.find((product) => product.id === id);
+    return of(product!);
+  }
+
+  addProduct(newProduct: Partial<Product>): Observable<Product> {
+    return this.http.post<Product>(this.productsUrl, newProduct).pipe(
+      map((product) => {
+        this.products.push(product);
+        return product;
+      }),
+    );
   }
 }
