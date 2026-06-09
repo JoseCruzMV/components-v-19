@@ -21,6 +21,10 @@ export class ProductDetailComponent implements OnChanges {
     this.product$ = this.productService.getProduct(this.id()!);
   }
 
+  changePrice(product: Product, price: string) {
+    this.productService.updateProduct(product.id, Number(price)).subscribe();
+  }
+
   addToCart() {
     this.added.emit();
   }
