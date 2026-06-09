@@ -7,21 +7,21 @@ import { APP_SETTINGS } from './app.settings';
   providedIn: 'root',
 })
 export class AuthService {
-  private accessToken = signal('');
+  accessToken = signal('');
   private authUrl = inject(APP_SETTINGS).apiUrl + '/auth';
   isLoggedIn = computed(() => this.accessToken() !== '');
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<string> {
+  login(username: string, password: string): Observable<{ token: string }> {
     return this.http
-      .post<string>(`${this.authUrl}/login`, {
+      .post<{ token: string }>(`${this.authUrl}/login`, {
         username,
         password,
       })
       .pipe(
-        tap((token) => {
-          this.accessToken.set(token);
+        tap((response) => {
+          this.accessToken.set(response.token);
         }),
       );
   }
