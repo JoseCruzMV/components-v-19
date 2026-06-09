@@ -1,47 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Product } from './product';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { APP_SETTINGS } from './app.settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private products: Product[] = [
-    {
-      id: 1,
-      title: 'Keyboard',
-      price: 100,
-      categories: {
-        1: 'Computing',
-        2: 'Peripherals',
-      },
-    },
-    {
-      id: 2,
-      title: 'Microphone',
-      price: 35,
-      categories: { 3: 'Multimedia' },
-    },
-    {
-      id: 3,
-      title: 'Web camera',
-      price: 79,
-      categories: {
-        1: 'Computing',
-        3: 'Multimedia',
-      },
-    },
-    {
-      id: 4,
-      title: 'Tablet',
-      price: 500,
-      categories: { 4: 'Entertainment' },
-    },
-  ];
+  private productsUrl = inject(APP_SETTINGS).apiUrl + '/products';
 
-  constructor() {}
+  private products: Product[] = [];
+
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
-    return of(this.products);
+    return this.http.get<Product[]>(this.productsUrl);
   }
 }
