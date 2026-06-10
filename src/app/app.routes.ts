@@ -16,4 +16,13 @@ export const routes: Routes = [
     path: 'products/new',
     component: ProductCreateComponent,
   },
+  {
+    path: '',
+    redirectTo: 'products',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'products',
+  },
 ];
