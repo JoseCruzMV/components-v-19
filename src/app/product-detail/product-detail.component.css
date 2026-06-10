@@ -40,3 +40,6 @@ button.delete {
   align-items: start;
   flex-wrap: wrap;
 }
+:host {
+  width: 450px;
+}
