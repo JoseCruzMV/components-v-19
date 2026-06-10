@@ -1,6 +1,8 @@
-@if (products()) {
+@let products = (products$ | async)!;
+
+@if (products) {
   <div class="caption">
-    <h1>Products ({{ products().length }})</h1>
+    <h1>Products ({{ products.length }})</h1>
     <a routerLink="new">
       <svg
         width="24"
@@ -17,7 +19,7 @@
   </div>
 }
 <ul class="pill-group">
-  @for (product of products() | sort; track product.id) {
+  @for (product of products | sort; track product.id) {
     <li class="pill">
       @switch (product.category) {
         @case ("electronics") {
