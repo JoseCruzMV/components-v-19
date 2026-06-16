@@ -6,6 +6,7 @@ import { ProductsService } from '../products.service';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,6 +24,7 @@ export class ProductDetailComponent implements OnInit {
     public authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
+    private cartService: CartService,
   ) {}
 
   ngOnInit(): void {
@@ -45,5 +47,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart() {}
+  addToCart(id: number) {
+    this.cartService.addProduct(id).subscribe();
+  }
 }
