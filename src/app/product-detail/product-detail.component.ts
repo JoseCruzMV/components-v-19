@@ -5,16 +5,18 @@ import { Observable, switchMap } from 'rxjs';
 import { ProductsService } from '../products.service';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [CommonModule, AsyncPipe],
+  imports: [CommonModule, AsyncPipe, FormsModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
 })
 export class ProductDetailComponent implements OnInit {
   id = input<number>();
   product$: Observable<Product> | undefined;
+  price: number | undefined;
 
   constructor(
     private productService: ProductsService,
@@ -31,12 +33,10 @@ export class ProductDetailComponent implements OnInit {
     );
   }
 
-  changePrice(product: Product, price: string) {
-    this.productService
-      .updateProduct(product.id, Number(price))
-      .subscribe(() => {
-        this.router.navigate(['/products']);
-      });
+  changePrice(product: Product) {
+    this.productService.updateProduct(product.id, this.price!).subscribe(() => {
+      this.router.navigate(['/products']);
+    });
   }
 
   remove(product: Product) {
