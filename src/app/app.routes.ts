@@ -35,6 +35,10 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'user',
+    loadChildren: () => import('./user.routes'),
+  },
+  {
     path: '**',
     redirectTo: 'products',
   },
