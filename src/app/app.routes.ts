@@ -3,6 +3,8 @@ import { CartComponent } from './cart/cart.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { authGuard } from './auth.guard';
+import { checkoutGuard } from './checkout.guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +22,8 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
+    canActivate: [authGuard],
+    canDeactivate: [checkoutGuard],
   },
   {
     path: '',
