@@ -37,6 +37,7 @@ export const routes: Routes = [
   {
     path: 'user',
     loadChildren: () => import('./user.routes'),
+    canMatch: [authGuard],
   },
   {
     path: '**',
