@@ -23,6 +23,12 @@
     ) {
       <span class="help-text">Price should be greater than 0</span>
     }
+    @if (
+      productForm.controls.price.touched &&
+      productForm.controls.price.hasError("priceMaximum")
+    ) {
+      <span class="help-text">Price must be smaller or equal to 1000</span>
+    }
   </div>
   <div>
     <label for="category">Category</label>
