@@ -7,10 +7,11 @@ import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../cart.service';
+import { PriceMaximumDirective } from '../price-maximum.directive';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [CommonModule, AsyncPipe, FormsModule],
+  imports: [CommonModule, AsyncPipe, FormsModule, PriceMaximumDirective],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
 })
